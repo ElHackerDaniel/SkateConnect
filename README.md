@@ -142,3 +142,5 @@ Att: ElHackerDaniel
 
 Inicio
 ----
+<img width="1831" height="863" alt="inicio" src="https://github.com/user-attachments/assets/e2e25618-1285-493f-ba97-7796d35df531" />
+
