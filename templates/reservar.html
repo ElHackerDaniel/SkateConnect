@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}Reservar{% endblock %}
+
+{% block content %}
+<div class="container mt-3" id="reservas-page">
+  <h2 class="mb-4">📅 Hacer una reserva</h2>
+
+  <!-- fila principal -->
+  <div class="row no-gutters" id="reservas-layout">
+
+    <!-- COLUMNA IZQUIERDA: FORMULARIO -->
+    <div class="col-md-6 col-12 p-2" id="reservas-left">
+      <div class="reservas-left-inner">
+
+        <form method="POST" action="{{ url_for('reservar') }}" id="formReserva" class="p-3">
+
+          <label>Fecha:</label>
+          <input type="date" name="fecha" id="fecha" class="form-control" min="{{ fecha_actual }}" max="{{ fecha_max }}" required>
+
+          <label class="mt-2">Hora de inicio:</label>
+          <!-- mantenemos input time por compatibilidad; si quieres grid de horas, lo activamos -->
+          <input type="time" name="hora_inicio" id="hora_inicio" class="form-control" required>
+
+          <label class="mt-2">Duración (horas):</label>
+          <select name="horas" id="horas" class="form-control" required>
+            <option value="" disabled selected>Seleccione duración</option>
+            {% for h in range(3, 11) %}
+            <option value="{{ h }}">{{ h }} horas</option>
+            {% endfor %}
+          </select>
+
+          <label class="mt-2">Número de personas:</label>
+          <input type="number" name="personas" id="personas" class="form-control" min="1" max="20" required>
+
+          <label class="mt-3">Seleccionar espacio:</label>
+          <select name="espacio_id" id="espacio_id" class="form-control" required>
+            <option value="" disabled selected>Seleccione un espacio</option>
+            {% for espacio in espacios %}
+            <option value="{{ espacio.id }}">{{ espacio.nombre }}</option>
+            {% endfor %}
+          </select>
+
+          <button type="submit" class="btn btn-primary mt-3 w-100">Reservar ahora</button>
+        </form>
+
+        <div class="alert alert-info mt-3" id="total_info" style="display:none;">
+          Total estimado: <strong id="total_txt">$0</strong>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: GRID 3x3 ESPACIOS -->
+    <div class="col-md-6 col-12 p-2" id="reservas-right">
+      <div class="reservas-right-inner p-3">
+        <h4>🏟️ Espacios disponibles</h4>
+
+        <!-- grid forzar 3 columnas -->
+        <div class="reservas-grid" id="espacios-grid">
+          {% for espacio in espacios %}
+          <div class="espacio-wrapper">
+            <div class="espacio-card" data-espacio-id="{{ espacio.id }}">
+              <div class="espacio-nombre">{{ espacio.nombre }}</div>
+              <div class="espacio-badge">Disponible</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- JS local para total y validación -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const personas = document.getElementById("personas");
+  const totalInfo = document.getElementById("total_info");
+  const totalTxt = document.getElementById("total_txt");
+  const form = document.getElementById("formReserva");
+  const inputFecha = document.getElementById("fecha");
+
+  personas?.addEventListener("input", () => {
+    if (!personas.value) {
+      totalInfo.style.display = "none";
+      return;
+    }
+    const precio = parseInt(personas.value) * 10000;
+    totalTxt.textContent = "$ " + precio.toLocaleString("es-CO");
+    totalInfo.style.display = "block";
+  });
+
+  form?.addEventListener("submit", async (e) => {
+    const fecha = inputFecha.value;
+    if (!fecha) return;
+    try {
+      const resp = await fetch(`/api/reservas_count/${fecha}`);
+      const data = await resp.json();
+      if (data.count >= 4) {
+        e.preventDefault();
+        alert("❌ Sólo se permiten 4 reservas por día.");
+      }
+    } catch (err) {
+      // no bloquear por fallo en fetch
+      console.warn("No se pudo validar límite de reservas:", err);
+    }
+  });
+
+  // Click selectable en tarjetas: al hacer click se selecciona en el select
+  document.querySelectorAll('.espacio-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.espacioId;
+      const select = document.getElementById('espacio_id');
+      if (select) {
+        select.value = id;
+        // efecto visual
+        document.querySelectorAll('.espacio-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      }
+    });
+  });
+
+});
+</script>
+{% endblock %}
+
+
+
+

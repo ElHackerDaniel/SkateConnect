@@ -1,0 +1,585 @@
+/* styles.css - ReservaSkate Deluxe Edition 🌌 */
+
+/* ---------- Variables ---------- */
+:root {
+  --bg: #060b10;
+  --card: rgba(15, 23, 32, 0.7);
+  --muted: #98a0a6;
+  --white: #ffffff;
+  --accent-blue: #1e90ff;
+  --accent-green: #22c55e;
+  --accent-dark: #0b1320;
+  --glass: rgba(255, 255, 255, 0.04);
+  --radius: 14px;
+  --container-width: 1100px;
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  --transition: all 0.25s ease-in-out;
+  font-family: 'Inter', 'Poppins', sans-serif;
+}
+
+/* ---------- Reset & layout ---------- */
+* {
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(circle at 20% 20%, #071520 0%, #050a0f 100%);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  background: rgba(10, 15, 20, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  animation: fadeUp 0.8s ease forwards;
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: var(--white);
+  padding: 6px;
+  box-shadow: var(--shadow);
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+.brand-text {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--white);
+}
+.brand-text .accent {
+  color: var(--accent-green);
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  position: relative;
+}
+.nav a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ---------- Buttons ---------- */
+.btn,
+.btn-primary,
+.btn-outline,
+.btn-ghost {
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: var(--transition);
+}
+.btn {
+  background: linear-gradient(90deg, var(--accent-blue), #3db0ff);
+  color: var(--card);
+  padding: 10px 16px;
+}
+.btn:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent-green), #7ef5a0);
+  color: var(--accent-dark);
+  padding: 10px 16px;
+  animation: pulse 3s infinite;
+}
+.btn-primary:hover {
+  filter: brightness(1.3);
+}
+.btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 9px 14px;
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  background: transparent;
+  padding: 8px 14px;
+}
+.btn-ghost:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ---------- Cards & Grid ---------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: fadeUp 0.8s ease forwards;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(30, 144, 255, 0.2);
+}
+.grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* ---------- Main animations ---------- */
+.main {
+  padding-top: 32px;
+  padding-bottom: 48px;
+  animation: fadeUp 0.9s ease forwards;
+}
+
+/* ---------- Flash messages ---------- */
+#flash-wrapper {
+  position: fixed;
+  right: 24px;
+  top: 80px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.flash {
+  padding: 14px 18px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.8);
+  font-weight: 700;
+  color: var(--accent-dark);
+  animation: fadeUp 0.6s ease forwards;
+  position: relative;
+}
+.flash-success {
+  background: linear-gradient(90deg, var(--accent-green), #7ef5a0);
+}
+.flash-error {
+  background: linear-gradient(90deg, #ff5a5a, #ff8888);
+  color: #fff;
+}
+.flash-info {
+  background: linear-gradient(90deg, #6fb8ff, #9fd8ff);
+  color: var(--card);
+}
+.flash .flash-close {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-weight: 900;
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  top: 4px;
+}
+
+/* ---------- Tables ---------- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.table thead th {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  font-weight: 700;
+}
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: scale(1.01);
+}
+
+/* ---------- Forms ---------- */
+.form {
+  display: grid;
+  gap: 12px;
+}
+.input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: var(--white);
+  padding: 10px 12px;
+}
+.input:focus {
+  outline: 2px solid var(--accent-blue);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.01);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+  padding: 24px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .container {
+    padding: 16px;
+  }
+  .nav {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    padding: 16px;
+  }
+}
+/* chart loader dots */
+.chart-loader .dotdot { display:flex; gap:8px; align-items:center; }
+.chart-loader .dotdot div {
+  width:10px; height:10px; border-radius:50%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  opacity:0.95;
+  animation: loader-bounce 1s infinite ease-in-out;
+}
+.chart-loader .dotdot div:nth-child(2) { animation-delay: 0.12s; }
+.chart-loader .dotdot div:nth-child(3) { animation-delay: 0.24s; }
+@keyframes loader-bounce {
+  0% { transform: translateY(0); opacity:0.7; }
+  50% { transform: translateY(-8px); opacity:1; }
+  100% { transform: translateY(0); opacity:0.7; }
+}
+
+/* small smoothing for canvas container */
+.chart-card { 
+  position:relative; 
+  padding:12px; 
+  border-radius:12px; 
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); }
+
+.chart-card {
+    position: relative;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 260px;
+    width: 100%;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.chart-loader {
+    pointer-events: none !important;  /* ELIMINA BLOQUEO */
+}
+
+.chart-loader.removed {
+    display: none !important;         /* FUERZA REMOCIÓN */
+}
+
+/* ====== CHART FIXES ====== */
+.chart-card {
+  position: relative;
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 18px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+/* Para que el pie chart nunca se deforme */
+.chart-pie {
+  height: 320px !important;
+  max-height: 320px !important;
+}
+
+.admin-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.admin-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-card {
+    height: 320px;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.director-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.director-left,
+.director-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-card {
+    height: 320px;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Fix para el pie chart del panel del director */
+#wrapEsp {
+    position: relative;
+    height: 350px;          /* altura fija del contenedor */
+    max-height: 350px;
+    overflow: hidden;       /* evita que salga del card */
+}
+
+#wrapEsp canvas {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: contain;    /* ajusta proporciones sin salirse */
+}
+
+
+
+/* =========================
+   OVERRIDES ESPECÍFICOS RESERVAS (FORZAR 2 columnas: formulario + 3x3)
+   Pegar AL FINAL de styles.css
+   ========================= */
+
+/* layout de la página de reservas */
+#reservas-page { width: 100%; }
+#reservas-layout { display: flex !important; flex-wrap: wrap !important; gap: 0.75rem; }
+
+/* FORZAR columnas: la izquierda y la derecha */
+#reservas-left { flex: 0 0 50% !important; max-width: 50% !important; padding-right: 1rem !important; box-sizing: border-box; }
+#reservas-right { flex: 0 0 50% !important; max-width: 50% !important; box-sizing: border-box; padding-left: 1rem !important; }
+
+/* En pantallas pequeñas, apilar */
+@media (max-width: 880px) {
+  #reservas-left, #reservas-right { flex: 0 0 100% !important; max-width: 100% !important; padding: 0 !important; }
+}
+
+/* GRID 3x3 específico para la columna derecha:
+   Usamos CSS grid para ser independientes de cualquier .row/.col existente.
+*/
+#espacios-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px !important;
+  align-items: start;
+}
+
+/* wrapper individual (para controlar tamaño y centrado) */
+.espacio-wrapper {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/* tarjeta del espacio: estilo limpio, override de .card si existe */
+.espacio-card {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  min-height: 110px !important;
+  padding: 14px !important;
+  border-radius: 12px !important;
+
+  /* intenta mantener el visual actual */
+  background: rgba(15,23,32,0.75) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+
+/* hover y selección */
+.espacio-card:hover { transform: translateY(-6px) scale(1.02) !important; box-shadow: 0 16px 40px rgba(0,0,0,0.5) !important; }
+.espacio-card.selected { outline: 3px solid rgba(30,144,255,0.15) !important; transform: scale(1.03) !important; }
+
+/* contenido dentro de la tarjeta */
+.espacio-nombre { font-weight: 700 !important; font-size: 1.02rem !important; color: #fff !important; margin-bottom: 6px !important; }
+.espacio-badge { font-size: 0.78rem !important; padding: 6px 10px !important; background: rgba(34,197,94,0.12) !important; color: #dfffe6 !important; border-radius: 8px !important; }
+
+/* responsive: 2 columnas en pantallas medianas, 1 columna en muy pequeñas */
+@media (max-width: 1100px) {
+  #espacios-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 600px) {
+  #espacios-grid { grid-template-columns: repeat(1, 1fr) !important; }
+}
+
+/* =========================
+   ORDEN LAYOUT RESERVAS
+   ========================= */
+
+/* Contenedor principal */
+#reservas-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+}
+
+/* COLUMNA IZQUIERDA (FORMULARIO) */
+#reservas-left {
+    order: 1 !important;
+    flex: 0 0 48% !important;
+    max-width: 48% !important;
+}
+
+/* COLUMNA DERECHA (GRID 3×3) */
+#reservas-right {
+    order: 2 !important;
+    flex: 0 0 48% !important;
+    max-width: 48% !important;
+}
+
+/* En pantallas pequeñas se apilan */
+@media (max-width: 900px) {
+    #reservas-layout {
+        flex-direction: column !important;
+    }
+    #reservas-left, #reservas-right {
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+/* ===== Alinear formulario con grid de espacios ===== */
+
+#reservas-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;   /* CENTRAR verticalmente */
+    gap: 40px !important;
+}
+
+/* Forzar límites de ancho */
+#reservas-left {
+    width: 48% !important;
+}
+
+#reservas-right {
+    width: 48% !important;
+}
+
+/* En móviles: columnas normales */
+@media (max-width: 900px) {
+    #reservas-layout {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    #reservas-left,
+    #reservas-right {
+        width: 100% !important;
+    }
+}
+

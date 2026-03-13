@@ -1,0 +1,12 @@
+1. Debes descagar Ngrok para montaar un servidor https
+2. Debes conectar Ngrok con el server python
+3. La base de datos debes de ponerla en xampp, sacarla de la carpeta database,
+borrar la carpeta database del proyecto y montar la base de datos reservasSkate
+en xampp
+4. Correr el proyecto app.py y en otra terminal el server Ngrok
+5. Ir al enlace http de ngrok y ya estara montado online
+
+PDT: cualquiera con el enlace http de Ngrok puede conectarse, tener precaucion
+a quien le des el enlace
+
+Eso es todo, disfruta de mi proyecto :3

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}Panel del Director{% endblock %}
+
+{% block content %}
+
+<h2>🏁 Panel del Director</h2>
+<p>Bienvenido <strong>{{ session['nombre'] }}</strong></p>
+
+<div class="director-container">
+
+    <!-- Izquierda -->
+    <div class="director-left">
+
+        <div class="card chart-card">
+            <h3>📅 Reservas por día</h3>
+            <div id="wrapRes">
+                <canvas id="chartReservas"></canvas>
+            </div>
+        </div>
+
+        <div class="card chart-card">
+            <h3>🧍 Usuarios con más reservas</h3>
+            <div id="wrapUsers">
+                <canvas id="chartUsuarios"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Derecha -->
+    <div class="director-right">
+
+        <div class="card chart-card">
+            <h3>🏟️ Ocupación por espacio</h3>
+            <div id="wrapEsp">
+                <canvas id="chartEspacios"></canvas>
+            </div>
+        </div>
+
+        <a href="{{ url_for('director_descargar_informe') }}" class="btn" 
+            style="margin-top:20px; width:100%; text-align:center;">
+            📄 Descargar informe visual (PDF)
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- SCRIPT — FIX TOTAL: MATCH LLAVES EXACTAS DEL BACKEND -->
+<!-- ========================================================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function init() {
+        if (!window.Chart ||
+            !window.showChartLoader ||
+            !window.hideChartLoader ||
+            !window.createAnimatedChart) {
+            return setTimeout(init, 80);
+        }
+
+        showChartLoader("wrapRes");
+        showChartLoader("wrapUsers");
+        showChartLoader("wrapEsp");
+
+        fetch("{{ url_for('director_data') }}")
+            .then(r => r.json())
+            .then(data => {
+
+                hideChartLoader("wrapRes");
+                hideChartLoader("wrapUsers");
+                hideChartLoader("wrapEsp");
+
+                // ----------------------------
+                // 🔥 FIX: Mapeo correcto
+                // ----------------------------
+                const porDia = data.por_dia.map(d => ({
+                    fecha: d.fecha,
+                    total: d.total_reservas      // <--- CORREGIDO
+                }));
+
+                const usuarios = data.usuarios.map(u => ({
+                    nombre: u.nombre,
+                    total: u.reservas            // <--- CORREGIDO
+                }));
+
+                const espacios = data.espacios.map(e => ({
+                    nombre: e.nombre,
+                    total: e.total_reservas      // <--- CORREGIDO
+                }));
+
+                // ----------------------------
+                // 📊 GRÁFICO 1 — Reservas por día
+                // ----------------------------
+                createAnimatedChart(
+                    document.getElementById("chartReservas").getContext("2d"),
+                    {
+                        type: "line",
+                        data: {
+                            labels: porDia.map(x => x.fecha),
+                            datasets: [{
+                                data: porDia.map(x => x.total),
+                                borderColor: "#22c55e",
+                                backgroundColor: "rgba(34,197,94,0.2)"
+                            }]
+                        }
+                    }
+                );
+
+                // ----------------------------
+                // 📊 GRÁFICO 2 — Usuarios activos
+                // ----------------------------
+                createAnimatedChart(
+                    document.getElementById("chartUsuarios").getContext("2d"),
+                    {
+                        type: "bar",
+                        data: {
+                            labels: usuarios.map(x => x.nombre),
+                            datasets: [{
+                                data: usuarios.map(x => x.total),
+                                backgroundColor: "#1e90ff"
+                            }]
+                        }
+                    }
+                );
+
+                // ----------------------------
+                // 📊 GRÁFICO 3 — Ocupación por espacio
+                // ----------------------------
+                createAnimatedChart(
+                    document.getElementById("chartEspacios").getContext("2d"),
+                    {
+                        type: "pie",
+                        data: {
+                            labels: espacios.map(x => x.nombre),
+                            datasets: [{
+                                data: espacios.map(x => x.total),
+                                backgroundColor: [
+                                    "#1e90ff", "#22c55e", "#ffc107",
+                                    "#ff6384", "#36a2eb", "#8e44ad"
+                                ]
+                            }]
+                        }
+                    }
+                );
+
+            })
+            .catch(err => {
+                hideChartLoader("wrapRes");
+                hideChartLoader("wrapUsers");
+                hideChartLoader("wrapEsp");
+                console.error(err);
+            });
+    }
+
+    init();
+
+});
+</script>
+
+{% endblock %}

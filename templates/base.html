@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}ReservaSkate{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <!-- Cargar UNA sola vez scripts.js -->
+  <script defer src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+  <!-- Chart.js solo una vez -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ReservaSkate" class="logo">
+          <span class="brand-text">Reserva<span class="accent">Skate</span></span>
+        </a>
+      </div>
+
+      <nav class="nav">
+        <a href="{{ url_for('index') }}">Inicio</a>
+        {% if session.get('user_id') %}
+          {% if session.get('rol') == 'USUARIO' %}
+            <a href="{{ url_for('reservar') }}">Reservar</a>
+            <a href="{{ url_for('historial') }}">Historial</a>
+          {% elif session.get('rol') == 'ADMIN' %}
+            <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+          {% elif session.get('rol') == 'DIRECTOR' %}
+            <a href="{{ url_for('director_dashboard') }}">Director</a>
+          {% endif %}
+          <a href="{{ url_for('logout') }}" class="btn btn-ghost">Cerrar sesión</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn">Iniciar sesión</a>
+          <a href="{{ url_for('register') }}" class="btn btn-ghost">Registrarse</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div id="flash-wrapper">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}
+              <button class="flash-close">✕</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© {{ current_year if current_year else "2025" }} ReservaSkate — Diseño por Daniel Alzate</p>
+      <p class="small">Tu viaje, tu comunidad, tu skate.❤️</p>
+    </div>
+  </footer>
+</body>
+</html>

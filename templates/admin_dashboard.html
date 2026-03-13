@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}Panel del Administrador{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:20px;">⚙️ Panel del Administrador</h2>
+<p>Bienvenido administrador <strong>{{ session['nombre'] }}</strong></p>
+
+<div class="admin-container">
+
+  <!-- COLUMNA IZQUIERDA -->
+  <div class="admin-left">
+
+      <!-- RESUMEN -->
+      <div class="card">
+          <h3>📅 Resumen diario</h3>
+          <p>Reservas hoy: <strong>{{ total_hoy }}</strong></p>
+
+          <a href="{{ url_for('reporte_pdf') }}" class="btn">🧾 Descargar reporte PDF</a>
+      </div>
+
+      <!-- TABLA RESERVAS -->
+      <div class="card">
+          <h3>📋 Todas las reservas</h3>
+
+          {% if reservas %}
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Usuario</th>
+                      <th>Espacio</th>
+                      <th>Fecha</th>
+                      <th>Inicio</th>
+                      <th>Fin</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for r in reservas %}
+                  <tr>
+                      <td>{{ r.id }}</td>
+                      <td>{{ r.usuario }}</td>
+                      <td>{{ r.espacio }}</td>
+                      <td>{{ r.fecha }}</td>
+                      <td>{{ r.hora_inicio }}</td>
+                      <td>{{ r.hora_fin }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          {% else %}
+          <p>No hay reservas registradas.</p>
+          {% endif %}
+      </div>
+
+  </div>
+
+  <!-- COLUMNA DERECHA -->
+  <div class="admin-right">
+
+      <div class="card chart-card">
+          <h3>📊 Reservas por día</h3>
+          <div id="chartWrapReservas">
+              <canvas id="graficoReservas"></canvas>
+          </div>
+      </div>
+
+      <div class="card chart-card">
+          <h3>🏟️ Espacios más reservados</h3>
+          <div id="chartWrapEspacios">
+              <canvas id="chartEspacios"></canvas>
+          </div>
+      </div>
+
+  </div>
+
+</div>
+
+
+<!-- SCRIPT (100% corregido con las llaves correctas) -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    fetch("{{ url_for('admin_data') }}")
+        .then(res => res.json())
+        .then(data => {
+
+            // --------------------------
+            // CORRECCIÓN DE LLAVES
+            // --------------------------
+            const porDia = data.por_dia.map(d => ({
+                fecha: d.fecha,
+                total: d.total_reservas   // <--- CORREGIDO
+            }));
+
+            const espacios = data.espacios.map(e => ({
+                nombre: e.nombre,
+                total: e.total_reservas   // <--- CORREGIDO
+            }));
+
+            // --------------------------
+            // gráfico: RESERVAS POR DÍA
+            // --------------------------
+            new Chart(document.getElementById("graficoReservas"), {
+                type: "line",
+                data: {
+                    labels: porDia.map(d => d.fecha),
+                    datasets: [{
+                        label: "Reservas",
+                        data: porDia.map(d => d.total),
+                        borderColor: "#22c55e",
+                        backgroundColor: "rgba(34,197,94,0.2)",
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // --------------------------
+            // gráfico: ESPACIOS MÁS RESERVADOS
+            // --------------------------
+            new Chart(document.getElementById("chartEspacios"), {
+                type: "bar",
+                data: {
+                    labels: espacios.map(e => e.nombre),
+                    datasets: [{
+                        label: "Reservas",
+                        data: espacios.map(e => e.total),
+                        backgroundColor: "#1e90ff"
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+        });
+
+});
+</script>
+
+{% endblock %}
+

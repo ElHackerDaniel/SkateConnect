@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Iniciar sesión - ReservaSkate{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px; margin:0 auto;">
+  <h2>🔐 Iniciar sesión</h2>
+  <form method="POST" class="form">
+    <label>Correo</label>
+    <input class="input" type="email" name="correo" required>
+    <label>Contraseña</label>
+    <input class="input" type="password" name="contraseña" required>
+    <input type="hidden" name="next" value="{{ next or '' }}">
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn-primary" type="submit">Entrar</button>
+      <a class="btn-outline" href="{{ url_for('register') }}">Regístrate</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
