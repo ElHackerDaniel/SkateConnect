@@ -8,37 +8,40 @@ El objetivo del proyecto es ofrecer una plataforma simple para organizar reserva
 🚀 Características
 -------------
 - 🔐 Autenticación de usuarios
- - Registro
- - Inicio de sesión
+  - Registro
+  - Inicio de sesión
 - 👥 Sistema de roles
- - ADMIN → control total del sistema
- - DIRECTORIO → acceso a reportes y gestión limitada
- - USUARIO → puede reservar, cancelar y ver su historial
+  - ADMIN → control total del sistema
+  - DIRECTORIO → acceso a reportes y gestión limitada
+  - USUARIO → puede reservar, cancelar y ver su historial
 - 🛹 Gestión de reservas
- - Crear reservas
- - Cancelar reservas
- - Seleccionar espacios disponibles
- - Definir número de participantes
+  - Crear reservas
+  - Cancelar reservas
+  - Seleccionar espacios disponibles
+  - Definir número de participantes
 - 🧾 Facturación
- - Generación de facturas en PDF
- - Historial de facturación por usuario
+  - Generación de facturas en PDF
+  - Historial de facturación por usuario
 - 📊 Panel de administración
- - Visualización de reservas
- - Reportes del sistema
+  - Visualización de reservas
+  - Reportes del sistema
 
 🏗️ Tecnologías utilizadas
 -------------
 ###Backend
+
 - Python
 - Flask
 - MySQL
 
 ###Frontend
+
 - HTML5
 - CSS3
 - JavaScript
 
 ###Librerías
+
 - ReportLab (generación de PDF) 
 
 ⚙️ Instalación
