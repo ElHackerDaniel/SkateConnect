@@ -98,7 +98,9 @@ En esta parte podrias ir a ver las instructions.txt para el link https
 | Admin  | Gestiona usuarios, reservas y reportes |
 | Directorio     |  Visualiza reportes |
 | Usuario      | Realiza reservas y consulta historial |
+
 ###📄 Generación de facturas
+
 Cada reserva genera una factura en PDF que incluye:
 - ID de la reserva
 - Usuario
@@ -111,6 +113,7 @@ Las facturas se guardan en:
 
 `/facturas`
 ###📌 Posibles mejoras futuras
+
 - Pagos en línea
 - Notificaciones por correo
 - Calendario visual de reservas
