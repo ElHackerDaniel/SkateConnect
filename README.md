@@ -47,8 +47,10 @@ El objetivo del proyecto es ofrecer una plataforma simple para organizar reserva
 ⚙️ Instalación
 -------------
 ###Clonar el repositorio
+
 `$ git clone https://github.com/ElHackerDaniel/SkateConnect.git`
 `$ cd skateconnect`
+
 ###Crear entorno virtual (opcional)
 `$ python -m venv venv`
 
@@ -63,6 +65,7 @@ Linux / Mac
 `$ source venv/bin/activate`
 
 ###Instalar dependencias
+
 `$ pip install flask mysql-connector-python reportlab`
 ###Configurar la base de datos
 Editar el archivo:
